@@ -16,7 +16,7 @@ There is currently no official GUI client for the SurfShark VPN on Linux, so thi
   ```
    git clone --depth 1 https://github.com/jakeday/surfshark-vpn-gui.git ~/surfshark-vpn-gui
   ```
-2. Change directory to linux-surface repo:
+2. Change directory to surfshark-vpn-gui repo:
   ```
    cd ~/surfshark-vpn-gui
   ```
