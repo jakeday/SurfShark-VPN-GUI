@@ -5,7 +5,7 @@
 # Basic GUI for connecting to surfshark vpn
 #----------------------------------------------------------------------
 
-import requests, os, sys, subprocess, time, wx, zipfile, glob, fnmatch
+import requests, os, sys, subprocess, time, wx, zipfile, glob, fnmatch, json
 
 class MyFrame(wx.Frame):
     def __init__(self, parent, title):
@@ -28,7 +28,11 @@ class MyFrame(wx.Frame):
         self.panel = wx.Panel(self)
 
         config_path = os.path.expanduser('~/.surfshark/configs')
-        servers = [os.path.basename(x).split('.ovpn', 1)[0] for x in glob.glob(config_path + '/*.ovpn')]
+
+        with open('servers.json') as s:
+            self.serverdata = json.load(s)
+
+        servers = list(self.serverdata.keys())
 
         self.combo = wx.ComboBox(self.panel, choices = servers)
 
@@ -96,8 +100,9 @@ class MyFrame(wx.Frame):
         self.panel.Layout()
 
         config_path = os.path.expanduser('~/.surfshark/configs')
-        config_file = config_path + '/' + self.combo.GetValue() + '.ovpn'
         credentials_file = config_path + '/credentials'
+
+        config_file = config_path + '/' + self.serverdata[self.combo.GetValue()] + '_udp.ovpn'
 
         self.ovpn = subprocess.Popen(['sudo', 'openvpn', '--auth-nocache', '--config', config_file, '--auth-user-pass', credentials_file], preexec_fn=os.setpgrp)
 
