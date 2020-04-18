@@ -34,7 +34,8 @@ class MyFrame(wx.Frame):
 
         servers = list(self.serverdata.keys())
 
-        self.combo = wx.ComboBox(self.panel, choices = servers)
+        self.servercmb = wx.ComboBox(self.panel, choices = servers)
+        self.protocmb = wx.ComboBox(self.panel, value="udp", choices = ['udp','tcp'])
 
         self.connectbtn = wx.Button(self.panel, -1, "Quick Connect")
         self.connectbtn.SetBackgroundColour('#00d18a')
@@ -49,11 +50,17 @@ class MyFrame(wx.Frame):
 
         self.Bind(wx.EVT_BUTTON, self.OnConnect, self.connectbtn)
         self.Bind(wx.EVT_BUTTON, self.OnDisconnect, self.disconnectbtn)
-
+        
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(logoimgBmp, 0, wx.CENTER, 10)
         sizer.AddSpacer(10)
-        sizer.Add(self.combo, 0, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 10)
+
+        hsizer = wx.BoxSizer(wx.HORIZONTAL)
+        hsizer.Add(self.servercmb, 0, wx.CENTER, 10)
+        hsizer.Add(self.protocmb, 0, wx.CENTER, 10)
+
+        sizer.Add(hsizer, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 10)
+        #sizer.Add(self.servercmb, 0, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 10)
         sizer.Add(self.connectbtn, 0, wx.CENTER, 10)
         sizer.Add(self.disconnectbtn, 0, wx.CENTER, 10)
 
@@ -102,7 +109,7 @@ class MyFrame(wx.Frame):
         config_path = os.path.expanduser('~/.surfshark/configs')
         credentials_file = config_path + '/credentials'
 
-        config_file = config_path + '/' + self.serverdata[self.combo.GetValue()] + '_udp.ovpn'
+        config_file = config_path + '/' + self.serverdata[self.servercmb.GetValue()] + '_' + self.protocmb.GetValue() + '.ovpn'
 
         self.ovpn = subprocess.Popen(['sudo', 'openvpn', '--auth-nocache', '--config', config_file, '--auth-user-pass', credentials_file], preexec_fn=os.setpgrp)
 
