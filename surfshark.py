@@ -14,8 +14,8 @@ class MyFrame(wx.Frame):
         menuBar = wx.MenuBar()
         menu = wx.Menu()
 
-        menu.Append(wx.ID_EXIT, "E&xit\tAlt-X", "Exit SurfShark VPN GUI")
         menu.Append(wx.ID_PREFERENCES, "Enter &Credentials\tAlt-C", "Enter SurfShark Credentials")
+        menu.Append(wx.ID_EXIT, "E&xit\tAlt-X", "Exit SurfShark VPN GUI")
 
         self.Bind(wx.EVT_MENU, self.OnClose, id=wx.ID_EXIT)
         self.Bind(wx.EVT_MENU, self.OnCredentials, id=wx.ID_PREFERENCES)
@@ -60,7 +60,6 @@ class MyFrame(wx.Frame):
         hsizer.Add(self.protocmb, 0, wx.CENTER, 10)
 
         sizer.Add(hsizer, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 10)
-        #sizer.Add(self.servercmb, 0, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 10)
         sizer.Add(self.connectbtn, 0, wx.CENTER, 10)
         sizer.Add(self.disconnectbtn, 0, wx.CENTER, 10)
 
