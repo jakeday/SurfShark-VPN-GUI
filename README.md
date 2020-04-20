@@ -2,7 +2,7 @@
 
 A GUI client for connecting to the SurfShark VPN.
 
-![surfshark-vpn-gui](https://user-images.githubusercontent.com/554899/79599601-c6247200-80b3-11ea-9cbb-ef31ed8d18b8.png)
+![surfshark-vpn-gui](https://user-images.githubusercontent.com/554899/79762280-8f876b00-82f0-11ea-9d4a-e050498f8bc7.png)
 
 ### About
 There is currently no official GUI client for the SurfShark VPN on Linux, so this is to fill the need! This client uses OpenVPN to setup the connection, so the surfshark-vpn package is not required.
