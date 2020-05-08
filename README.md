@@ -11,7 +11,7 @@ There is currently no official GUI client for the SurfShark VPN on Linux, so thi
 
 0. (Prep) Install Dependencies:
   ```
-   sudo apt install git openvpn python3 python3-pip
+   sudo apt install git openvpn python3 python3-pip libgtk-3-dev
    sudo pip3 install wxwidgets
   ```
 1. Clone the surfshark-vpn-gui repo:
