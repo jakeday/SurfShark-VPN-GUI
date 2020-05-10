@@ -25,7 +25,7 @@ There is currently no official GUI client for the SurfShark VPN on Linux, so thi
   ```
    python3 surfshark.py
   ```
-4. With the client open, be sure to enter your SurfShark credentials by clicking File and then Enter Credentials.
+4. With the client open, be sure to enter your SurfShark credentials by clicking the Enter Credentials button.
 
 ### Donations Appreciated!
 

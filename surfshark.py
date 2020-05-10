@@ -9,16 +9,14 @@ import requests, os, sys, subprocess, time, wx, zipfile, glob, fnmatch, json
 
 class MyFrame(wx.Frame):
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent, -1, title, pos=(150, 150), size=(300, 400))
+        wx.Frame.__init__(self, parent, -1, title, pos=(150, 150), size=(300, 450))
 
         menuBar = wx.MenuBar()
         menu = wx.Menu()
 
-        menu.Append(wx.ID_PREFERENCES, "Enter &Credentials\tAlt-C", "Enter SurfShark Credentials")
         menu.Append(wx.ID_EXIT, "E&xit\tAlt-X", "Exit SurfShark VPN GUI")
 
         self.Bind(wx.EVT_MENU, self.OnClose, id=wx.ID_EXIT)
-        self.Bind(wx.EVT_MENU, self.OnCredentials, id=wx.ID_PREFERENCES)
 
         menuBar.Append(menu, "&File")
         self.SetMenuBar(menuBar)
@@ -39,6 +37,10 @@ class MyFrame(wx.Frame):
         self.servercmb = wx.ComboBox(self.panel, choices = servers)
         self.protocmb = wx.ComboBox(self.panel, value="udp", choices = ['udp','tcp'])
 
+        self.credentialsbtn = wx.Button(self.panel, -1, "Enter Credentials")
+        self.credentialsbtn.SetBackgroundColour('#ffffff')
+        self.credentialsbtn.SetForegroundColour('#00d18a')
+
         self.connectbtn = wx.Button(self.panel, -1, "Quick Connect")
         self.connectbtn.SetBackgroundColour('#00d18a')
         self.connectbtn.SetForegroundColour('#ffffff')
@@ -50,11 +52,15 @@ class MyFrame(wx.Frame):
         logoimg = wx.Image(os.path.join(my_path, 'logo.png'), wx.BITMAP_TYPE_ANY)
         logoimgBmp = wx.StaticBitmap(self.panel, wx.ID_ANY, wx.Bitmap(logoimg))
 
+        self.Bind(wx.EVT_BUTTON, self.OnCredentials, self.credentialsbtn)
         self.Bind(wx.EVT_BUTTON, self.OnConnect, self.connectbtn)
         self.Bind(wx.EVT_BUTTON, self.OnDisconnect, self.disconnectbtn)
         
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(logoimgBmp, 0, wx.CENTER, 10)
+
+        sizer.Add(self.credentialsbtn, 0, wx.ALIGN_CENTER, 10)
+
+        sizer.Add(logoimgBmp, 0, wx.ALIGN_CENTER, 10)
         sizer.AddSpacer(10)
 
         hsizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -62,8 +68,8 @@ class MyFrame(wx.Frame):
         hsizer.Add(self.protocmb, 0, wx.ALIGN_RIGHT, 10)
 
         sizer.Add(hsizer, 1, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 10)
-        sizer.Add(self.connectbtn, 0, wx.CENTER, 10)
-        sizer.Add(self.disconnectbtn, 0, wx.CENTER, 10)
+        sizer.Add(self.connectbtn, 0, wx.ALIGN_CENTER, 10)
+        sizer.Add(self.disconnectbtn, 0, wx.ALIGN_CENTER, 10)
 
         self.disconnectbtn.Hide()
 
