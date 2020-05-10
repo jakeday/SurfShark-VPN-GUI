@@ -29,7 +29,9 @@ class MyFrame(wx.Frame):
 
         config_path = os.path.expanduser('~/.surfshark/configs')
 
-        with open('servers.json') as s:
+        my_path = os.path.abspath(os.path.dirname(__file__))
+
+        with open(os.path.join(my_path, 'servers.json')) as s:
             self.serverdata = json.load(s)
 
         servers = list(self.serverdata.keys())
@@ -45,7 +47,7 @@ class MyFrame(wx.Frame):
         self.disconnectbtn.SetBackgroundColour('#ffffff')
         self.disconnectbtn.SetForegroundColour('#00d18a')
 
-        logoimg = wx.Image('logo.png', wx.BITMAP_TYPE_ANY)
+        logoimg = wx.Image(os.path.join(my_path, 'logo.png'), wx.BITMAP_TYPE_ANY)
         logoimgBmp = wx.StaticBitmap(self.panel, wx.ID_ANY, wx.Bitmap(logoimg))
 
         self.Bind(wx.EVT_BUTTON, self.OnConnect, self.connectbtn)
