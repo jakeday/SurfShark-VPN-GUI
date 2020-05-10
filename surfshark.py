@@ -58,10 +58,10 @@ class MyFrame(wx.Frame):
         sizer.AddSpacer(10)
 
         hsizer = wx.BoxSizer(wx.HORIZONTAL)
-        hsizer.Add(self.servercmb, 0, wx.CENTER, 10)
-        hsizer.Add(self.protocmb, 0, wx.CENTER, 10)
+        hsizer.Add(self.servercmb, 1, wx.ALIGN_LEFT, 10)
+        hsizer.Add(self.protocmb, 0, wx.ALIGN_RIGHT, 10)
 
-        sizer.Add(hsizer, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 10)
+        sizer.Add(hsizer, 1, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 10)
         sizer.Add(self.connectbtn, 0, wx.CENTER, 10)
         sizer.Add(self.disconnectbtn, 0, wx.CENTER, 10)
 
