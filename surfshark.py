@@ -48,6 +48,7 @@ class MyFrame(wx.Frame):
         
         sizer = wx.BoxSizer(wx.VERTICAL)
 
+        sizer.AddSpacer(10)
         sizer.Add(self.credentialsbtn, 0, wx.ALIGN_CENTER, 10)
 
         sizer.Add(logoimgBmp, 0, wx.ALIGN_CENTER, 10)
