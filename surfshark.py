@@ -9,17 +9,7 @@ import requests, os, sys, subprocess, time, wx, zipfile, glob, fnmatch, json
 
 class MyFrame(wx.Frame):
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent, -1, title, pos=(150, 150), size=(300, 450))
-
-        menuBar = wx.MenuBar()
-        menu = wx.Menu()
-
-        menu.Append(wx.ID_EXIT, "E&xit\tAlt-X", "Exit SurfShark VPN GUI")
-
-        self.Bind(wx.EVT_MENU, self.OnClose, id=wx.ID_EXIT)
-
-        menuBar.Append(menu, "&File")
-        self.SetMenuBar(menuBar)
+        wx.Frame.__init__(self, parent, -1, title, pos=(150, 150), size=(300, 420))
 
         self.CreateStatusBar()
 
@@ -67,7 +57,9 @@ class MyFrame(wx.Frame):
         hsizer.Add(self.servercmb, 1, wx.ALIGN_LEFT, 10)
         hsizer.Add(self.protocmb, 0, wx.ALIGN_RIGHT, 10)
 
-        sizer.Add(hsizer, 1, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 10)
+        sizer.Add(hsizer, 0, wx.ALIGN_CENTER, 10)
+        sizer.AddSpacer(10)
+
         sizer.Add(self.connectbtn, 0, wx.ALIGN_CENTER, 10)
         sizer.Add(self.disconnectbtn, 0, wx.ALIGN_CENTER, 10)
 
