@@ -138,7 +138,7 @@ class MyApp(wx.App):
             os.makedirs(config_path)
 
         if not os.path.exists(config_path + '/configurations'):
-            confs_url = 'https://account.surfshark.com/api/v1/server/configurations'
+            confs_url = 'https://my.surfshark.com/vpn/api/v1/server/configurations'
             fileConfs = requests.get(confs_url)
             open(config_path + '/configurations', 'wb').write(fileConfs.content)
             with zipfile.ZipFile(config_path + '/configurations', 'r') as zip_conf:
