@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=SurfShark VPN GUI
-GenericName=SurfShark
-Terminal=false
-Type=Application
-Categories=Application
-Icon=surfsharkgui
-Exec=surfsharkvpngui
-StartupWMClass=surfsharkvpngui
