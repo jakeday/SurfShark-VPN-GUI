@@ -9,7 +9,7 @@ import requests, os, sys, subprocess, time, wx, zipfile, glob, fnmatch, json
 
 class MyFrame(wx.Frame):
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent, -1, title, pos=(150, 150), size=(300, 420))
+        wx.Frame.__init__(self, parent, -1, title, size=(300, 420))
 
         self.CreateStatusBar()
 
@@ -19,13 +19,13 @@ class MyFrame(wx.Frame):
 
         my_path = os.path.abspath(os.path.dirname(__file__))
 
-        with open(os.path.join(my_path, 'servers.json')) as s:
+        with open(os.path.join(my_path, 'assets/servers.json')) as s:
             self.serverdata = json.load(s)
 
         servers = list(self.serverdata.keys())
 
-        self.servercmb = wx.ComboBox(self.panel, choices = servers)
-        self.protocmb = wx.ComboBox(self.panel, value="udp", choices = ['udp','tcp'])
+        self.servercmb = wx.ComboBox(self.panel, choices=servers)
+        self.protocmb = wx.ComboBox(self.panel, value="udp", choices=['udp','tcp'])
 
         self.credentialsbtn = wx.Button(self.panel, -1, "Enter Credentials")
         self.credentialsbtn.SetBackgroundColour('#ffffff')
@@ -39,7 +39,7 @@ class MyFrame(wx.Frame):
         self.disconnectbtn.SetBackgroundColour('#ffffff')
         self.disconnectbtn.SetForegroundColour('#00d18a')
 
-        logoimg = wx.Image(os.path.join(my_path, 'logo.png'), wx.BITMAP_TYPE_ANY)
+        logoimg = wx.Image(os.path.join(my_path, 'assets/surfsharkgui.png'), wx.BITMAP_TYPE_ANY)
         logoimgBmp = wx.StaticBitmap(self.panel, wx.ID_ANY, wx.Bitmap(logoimg))
 
         self.Bind(wx.EVT_BUTTON, self.OnCredentials, self.credentialsbtn)
@@ -107,9 +107,9 @@ class MyFrame(wx.Frame):
         self.panel.Layout()
 
         config_path = os.path.expanduser('~/.surfshark/configs')
-        credentials_file = config_path + '/credentials'
+        credentials_file = os.path.join(config_path, 'credentials')
 
-        config_file = config_path + '/' + self.serverdata[self.servercmb.GetValue()] + '_' + self.protocmb.GetValue() + '.ovpn'
+        config_file = os.path.join(config_path, self.serverdata[self.servercmb.GetValue()] + '_' + self.protocmb.GetValue() + '.ovpn')
 
         self.ovpn = subprocess.Popen(['sudo', 'openvpn', '--auth-nocache', '--config', config_file, '--auth-user-pass', credentials_file], preexec_fn=os.setpgrp)
 
@@ -137,11 +137,11 @@ class MyApp(wx.App):
         if not os.path.exists(config_path):
             os.makedirs(config_path)
 
-        if not os.path.exists(config_path + '/configurations'):
+        if not os.path.exists(os.path.join(config_path, 'configurations')):
             confs_url = 'https://my.surfshark.com/vpn/api/v1/server/configurations'
             fileConfs = requests.get(confs_url)
-            open(config_path + '/configurations', 'wb').write(fileConfs.content)
-            with zipfile.ZipFile(config_path + '/configurations', 'r') as zip_conf:
+            open(os.path.join(config_path, 'configurations'), 'wb').write(fileConfs.content)
+            with zipfile.ZipFile(os.path.join(config_path, 'configurations'), 'r') as zip_conf:
                 zip_conf.extractall(config_path)
 
 app = MyApp()
