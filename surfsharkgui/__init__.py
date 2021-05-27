@@ -111,7 +111,7 @@ class MyFrame(wx.Frame):
 
         config_file = os.path.join(config_path, self.serverdata[self.servercmb.GetValue()] + '_' + self.protocmb.GetValue() + '.ovpn')
 
-        self.ovpn = subprocess.Popen(['sudo', 'openvpn', '--auth-nocache', '--config', config_file, '--auth-user-pass', credentials_file], preexec_fn=os.setpgrp)
+        self.ovpn = subprocess.Popen(['pkexec', 'openvpn', '--auth-nocache', '--config', config_file, '--auth-user-pass', credentials_file], preexec_fn=os.setpgrp)
 
     def OnDisconnect(self, evt):
         self.connectbtn.Show()
@@ -119,7 +119,7 @@ class MyFrame(wx.Frame):
         self.panel.Layout()
 
         pgid = os.getpgid(self.ovpn.pid)
-        subprocess.check_call(['sudo', 'kill', str(pgid)])
+        subprocess.check_call(['pkexec', 'kill', str(pgid)])
 
 class MyApp(wx.App):
     def OnInit(self):
