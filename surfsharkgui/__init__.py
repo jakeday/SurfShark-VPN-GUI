@@ -111,6 +111,8 @@ class MyFrame(wx.Frame):
 
         config_file = os.path.join(config_path, self.serverdata[self.servercmb.GetValue()] + '_' + self.protocmb.GetValue() + '.ovpn')
 
+        subprocess.Popen(['pkexec', 'sysctl', '-w', 'net.ipv6.conf.all.disable_ipv6=1'])
+
         self.ovpn = subprocess.Popen(['pkexec', 'openvpn', '--auth-nocache', '--config', config_file, '--auth-user-pass', credentials_file], preexec_fn=os.setpgrp)
 
     def OnDisconnect(self, evt):
@@ -120,6 +122,8 @@ class MyFrame(wx.Frame):
 
         pgid = os.getpgid(self.ovpn.pid)
         subprocess.check_call(['pkexec', 'kill', str(pgid)])
+
+        subprocess.Popen(['pkexec', 'sysctl', '-w', 'net.ipv6.conf.all.disable_ipv6=0'])
 
 class MyApp(wx.App):
     def OnInit(self):
