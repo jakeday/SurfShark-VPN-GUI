@@ -7,3 +7,4 @@ Categories=Application
 Icon=surfsharkgui
 Exec=surfsharkvpngui
 StartupWMClass=surfsharkvpngui
+X-Purism-FormFactor=Workstation;Mobile;
