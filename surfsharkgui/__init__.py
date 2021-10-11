@@ -5,7 +5,7 @@
 # Basic GUI for connecting to surfshark vpn
 #----------------------------------------------------------------------
 
-import requests, os, sys, subprocess, time, wx, zipfile, glob, fnmatch, json
+import requests, os, subprocess, wx, zipfile, json
 
 class MyFrame(wx.Frame):
     def __init__(self, parent, title):
