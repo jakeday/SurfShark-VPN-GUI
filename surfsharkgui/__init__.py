@@ -25,7 +25,7 @@ class MyFrame(wx.Frame):
         servers = list(self.serverdata.keys())
 
         self.servercmb = wx.ComboBox(self.panel, choices=servers)
-        self.protocmb = wx.ComboBox(self.panel, value="udp", choices=['udp','tcp'])
+        self.protocmb = wx.ComboBox(self.panel, value='udp', choices=['udp', 'tcp'], size=(80, -1))
 
         self.credentialsbtn = wx.Button(self.panel, -1, "Enter Credentials")
         self.credentialsbtn.SetBackgroundColour('#ffffff')
