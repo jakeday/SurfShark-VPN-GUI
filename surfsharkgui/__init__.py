@@ -40,6 +40,9 @@ class MyFrame(wx.Frame):
         self.disconnectbtn.SetForegroundColour('#00d18a')
 
         logoimg = wx.Image(os.path.join(my_path, 'assets/surfsharkgui.png'), wx.BITMAP_TYPE_ANY)
+        self.info = wx.StaticText(self.panel, -1, size=(320, 20), style=wx.ALIGN_CENTRE)
+        self.info.SetForegroundColour('#ff7f00')
+
         logoimgBmp = wx.StaticBitmap(self.panel, wx.ID_ANY, wx.Bitmap(logoimg))
 
         self.Bind(wx.EVT_BUTTON, self.OnCredentials, self.credentialsbtn)
@@ -59,6 +62,9 @@ class MyFrame(wx.Frame):
         hsizer.Add(self.protocmb, 0, wx.ALIGN_RIGHT, 10)
 
         sizer.Add(hsizer, 0, wx.ALIGN_CENTER, 10)
+        sizer.AddSpacer(10)
+
+        sizer.Add(self.info, 0, wx.ALIGN_CENTER, 10)
         sizer.AddSpacer(10)
 
         sizer.Add(self.connectbtn, 0, wx.ALIGN_CENTER, 10)
@@ -102,18 +108,21 @@ class MyFrame(wx.Frame):
                 fw.write(username + '\n' + password + '\n')
 
     def OnConnect(self, evt):
-        self.disconnectbtn.Show()
-        self.connectbtn.Hide()
-        self.panel.Layout()
-
-        config_path = os.path.expanduser('~/.surfshark/configs')
         credentials_file = os.path.join(config_path, 'credentials')
 
-        config_file = os.path.join(config_path, self.serverdata[self.servercmb.GetValue()] + '_' + self.protocmb.GetValue() + '.ovpn')
+        if self.servercmb.GetValue() in self.serverdata.keys():
+            config_file = os.path.join(config_path, self.serverdata[self.servercmb.GetValue()] + '_' + self.protocmb.GetValue() + '.ovpn')
 
-        subprocess.Popen(['pkexec', 'sysctl', '-w', 'net.ipv6.conf.all.disable_ipv6=1'])
+            self.disconnectbtn.Show()
+            self.connectbtn.Hide()
+            self.info.SetLabel('')
+            self.panel.Layout()
 
-        self.ovpn = subprocess.Popen(['pkexec', 'openvpn', '--auth-nocache', '--config', config_file, '--auth-user-pass', credentials_file], preexec_fn=os.setpgrp)
+            subprocess.Popen(['pkexec', 'sysctl', '-w', 'net.ipv6.conf.all.disable_ipv6=1'])
+
+            self.ovpn = subprocess.Popen(['pkexec', 'openvpn', '--auth-nocache', '--config', config_file, '--auth-user-pass', credentials_file], preexec_fn=os.setpgrp)
+        else:
+            self.info.SetLabel('Unknown server, please select a valid one in the list')
 
     def OnDisconnect(self, evt):
         self.connectbtn.Show()
