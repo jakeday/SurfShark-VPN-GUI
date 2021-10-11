@@ -39,6 +39,9 @@ class MyFrame(wx.Frame):
         self.credentialsbtn.SetBackgroundColour('#ffffff')
         self.credentialsbtn.SetForegroundColour('#00d18a')
 
+        self.updatebtn = wx.Button(self.panel, -1, '🔄', size=(28, 28), pos=(320 - 28, 0))
+        self.updatebtn.SetBackgroundColour('#ffffff')
+
         self.connectbtn = wx.Button(self.panel, -1, 'Quick Connect')
         self.connectbtn.SetBackgroundColour('#00d18a')
         self.connectbtn.SetForegroundColour('#ffffff')
@@ -56,6 +59,7 @@ class MyFrame(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnCredentials, self.credentialsbtn)
         self.Bind(wx.EVT_BUTTON, self.OnConnect, self.connectbtn)
         self.Bind(wx.EVT_BUTTON, self.OnDisconnect, self.disconnectbtn)
+        self.Bind(wx.EVT_BUTTON, self.OnUpdate, self.updatebtn)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -142,6 +146,25 @@ class MyFrame(wx.Frame):
         subprocess.check_call(['pkexec', 'kill', str(pgid)])
 
         subprocess.Popen(['pkexec', 'sysctl', '-w', 'net.ipv6.conf.all.disable_ipv6=0'])
+
+    def OnUpdate(self, evt):
+        self.info.SetLabel('Updating files, please wait')
+        self.Update()
+
+        clusters = requests.get(clusters_url)
+        clusters_path = os.path.join(config_path, 'clusters.json')
+        with open(clusters_path, 'wb') as file:
+            file.write(clusters.content)
+
+        configurations = requests.get(configurations_url)
+        configurations_path = os.path.join(config_path, 'configurations.zip')
+        locations_path = os.path.join(config_path, 'locations')
+        with open(configurations_path, 'wb') as file:
+            file.write(configurations.content)
+        with zipfile.ZipFile(configurations_path, 'r') as zip_conf:
+            zip_conf.extractall(locations_path)
+
+        self.info.SetLabel('')
 
 class MyApp(wx.App):
     def OnInit(self):
