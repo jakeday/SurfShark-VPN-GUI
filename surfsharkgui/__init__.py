@@ -59,7 +59,7 @@ class MyFrame(wx.Frame):
 
         hsizer = wx.BoxSizer(wx.HORIZONTAL)
         hsizer.Add(self.servercmb, 1, wx.ALIGN_LEFT, 10)
-        hsizer.Add(self.protocmb, 0, wx.ALIGN_RIGHT, 10)
+        hsizer.Add(self.protocmb, 0, wx.ALIGN_LEFT, 10)
 
         sizer.Add(hsizer, 0, wx.ALIGN_CENTER, 10)
         sizer.AddSpacer(10)
