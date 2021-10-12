@@ -39,7 +39,7 @@ class MyFrame(wx.Frame):
         self.credentialsbtn.SetBackgroundColour('#ffffff')
         self.credentialsbtn.SetForegroundColour('#00d18a')
 
-        self.updatebtn = wx.Button(self.panel, -1, '🔄', size=(28, 28), pos=(320 - 28, 0))
+        self.updatebtn = wx.Button(self.panel, -1, '🔄', size=(28, 28))
         self.updatebtn.SetBackgroundColour('#ffffff')
 
         self.connectbtn = wx.Button(self.panel, -1, 'Quick Connect')
@@ -64,7 +64,11 @@ class MyFrame(wx.Frame):
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         sizer.AddSpacer(10)
-        sizer.Add(self.credentialsbtn, 0, wx.ALIGN_CENTER, 10)
+        hsizer = wx.BoxSizer(wx.HORIZONTAL)
+        hsizer.Add(self.credentialsbtn, 0, wx.ALIGN_CENTER, 10)
+        hsizer.AddSpacer(40)
+        hsizer.Add(self.updatebtn, 0, wx.ALIGN_CENTER, 10)
+        sizer.Add(hsizer, 0, wx.ALIGN_CENTER, 10)
 
         sizer.Add(logoimgBmp, 0, wx.ALIGN_CENTER, 10)
         sizer.AddSpacer(10)
@@ -163,6 +167,13 @@ class MyFrame(wx.Frame):
             file.write(configurations.content)
         with zipfile.ZipFile(configurations_path, 'r') as zip_conf:
             zip_conf.extractall(locations_path)
+
+        with open(os.path.join(config_path, 'clusters.json')) as s:
+            self.jsondata = json.load(s)
+            self.serverdata = {x["location"] + " · " + x["country"]: x["connectionName"] for x in self.jsondata}
+
+        servers = list(self.serverdata.keys())
+        self.servercmb.Set(servers)
 
         self.info.SetLabel('')
 
