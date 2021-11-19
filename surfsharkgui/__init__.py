@@ -25,9 +25,16 @@ class MyFrame(wx.Frame):
             self.jsondata = json.load(s)
             self.serverdata = {x["location"] + " · " + x["country"]: x["connectionName"] for x in self.jsondata}
 
-        servers = list(self.serverdata.keys())
+        self.servers = list(self.serverdata.keys())
 
-        self.servercmb = wx.ComboBox(self.panel, choices=servers)
+        self.servercmb = wx.ComboBox(self.panel, choices=self.servers)
+        # Every text input filters the list of servers
+        self.servercmb.Bind(wx.EVT_TEXT, self.OnText)
+        self.ignore_evt_text = False
+        # Custom input handler to acts like a real cursor for text edition
+        self.servercmb.Bind(wx.EVT_KEY_DOWN, self.OnComboKey)
+        self.intersection_point = 0
+
         self.protocmb = wx.ComboBox(self.panel, value='udp', choices=['udp', 'tcp'], size=(80, -1))
 
         credentials_file = os.path.join(config_path, 'credentials')
@@ -93,6 +100,38 @@ class MyFrame(wx.Frame):
 
     def OnClose(self, evt):
         self.Close()
+
+    def OnComboKey(self, evt):
+        # Backspace key, shift index to previous
+        if evt.GetKeyCode() == 8:
+            self.intersection_point = self.servercmb.GetInsertionPoint() - 1
+        # Delete key, keep current index
+        elif evt.GetKeyCode() == 127:
+            self.intersection_point = self.servercmb.GetInsertionPoint()
+        # Any other key, increase length
+        else:
+            self.intersection_point = self.servercmb.GetInsertionPoint() + 1
+        # Continue event
+        evt.Skip()
+
+    def OnText(self, evt):
+        current_text = evt.GetString()
+        if self.ignore_evt_text:
+            self.ignore_evt_text = False
+            return
+
+        # Cancel double event triggered by single key
+        self.ignore_evt_text = True
+
+        if current_text:
+            matching = [x for x in self.servers if current_text.lower() in x.lower()]
+            self.servercmb.Set(matching)
+            # Cancel incoming event from servercmb update
+            self.ignore_evt_text = True
+            self.servercmb.SetValue(current_text)
+            self.servercmb.SetInsertionPoint(self.intersection_point)
+        elif len(current_text) == 0:
+            self.servercmb.Set(self.servers)
 
     def OnCredentials(self, evt):
         dlg = wx.MessageDialog(self,
@@ -172,8 +211,8 @@ class MyFrame(wx.Frame):
             self.jsondata = json.load(s)
             self.serverdata = {x["location"] + " · " + x["country"]: x["connectionName"] for x in self.jsondata}
 
-        servers = list(self.serverdata.keys())
-        self.servercmb.Set(servers)
+        self.servers = list(self.serverdata.keys())
+        self.servercmb.Set(self.servers)
 
         self.info.SetLabel('')
 
