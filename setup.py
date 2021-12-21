@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-import os
 import setuptools
 import setuptools.command.build_py
 
@@ -17,12 +16,12 @@ setuptools.setup(
         ('/usr/share/applications', ['surfsharkgui/assets/surfsharkgui.desktop'])
     ],
     package_data={
-        "": ["assets/*"]
+        '': ['assets/*']
     },
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
-            'surfsharkvpngui=surfsharkgui',
+            'surfsharkvpngui=surfsharkgui:main',
         ],
     },
 )
