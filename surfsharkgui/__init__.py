@@ -207,5 +207,9 @@ class MyApp(wx.App):
             with zipfile.ZipFile(configurations_path, 'r') as zip_conf:
                 zip_conf.extractall(locations_path)
 
-app = MyApp()
-app.MainLoop()
+def main():
+    app = MyApp()
+    app.MainLoop()
+
+if __name__ == '__main__':
+    main()
